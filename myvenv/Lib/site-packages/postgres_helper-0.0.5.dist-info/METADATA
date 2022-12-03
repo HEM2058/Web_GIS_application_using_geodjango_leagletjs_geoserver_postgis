@@ -1,0 +1,66 @@
+Metadata-Version: 2.1
+Name: postgres-helper
+Version: 0.0.5
+Summary: Package for Postgres query on python
+Home-page: https://github.com/iamtekson/postgres-helper
+Author: Tek Kshetri
+Author-email: iamtekson@gmail.com
+License: UNKNOWN
+Keywords: postgresql,postgres,database,sql,api,table,pg,postGIS
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: psycopg2
+
+# Postgres Helper
+
+The `postgres-helper` library is build on top of [`psycopg2`](https://github.com/psycopg/psycopg2/). It will be really helpful for running the basic postgresql query in python.
+
+Checkout the official documentation of this library here: [postgres-helper.readthedocs.io/](https://postgres-helper.readthedocs.io/)
+
+### Installation
+
+For installation of `postgres-helper`, you need to run following command
+
+```shell
+pip install postgres-helper
+```
+
+### Examples using this library
+
+Please check the official documentation here: [https://postgres-helper.readthedocs.io/](https://postgres-helper.readthedocs.io/).
+
+```python
+#Library import
+from pg.pg import Pg
+
+# Initialization of library
+pg = Db(dbname='postgres', user='postgres', password='admin', host='localhost', port='5432')
+
+# Get the column names of the specific table
+pg.get_columns_name(table='pg_table')
+
+# Get values from specific column of table
+pg.get_values_from_column(column='pg_table_col', table='pg_table', schema='public')
+
+# Create schema
+pg.create_schema(name='schema_name')
+
+# Create column
+pg.create_column(column='col_name', table='pg_table', col_datatype='varchar', schema='public')
+
+# Update column
+pg.update_column(column='col_name', value='updated_value', table='pg_table', where_column='where_col', where_value="where_val", schema='public')
+
+# Delete table
+pg.delete_table(name='pg_table', schema='public')
+
+# Delete values
+pg.delete_values(table_name='pg_table', condition='name=value', schema='public')
+```
+
+

@@ -1,0 +1,37 @@
+#map{
+    width:100%;
+    height:calc(100vh - 56px);
+
+}
+.coordinate-div{
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid slateblue;
+    border-radius: 15px ;
+}
+#coordinate{
+    display: flex;
+    background-color:slateblue;
+    color: white;
+    width: 300px;
+    height: 30px;
+    align-items: center;
+    justify-content: center;
+
+   
+}
+.fullscreen-div{
+    position:absolute;
+    top: 220px;
+    right: 14px;
+    background-color: white;
+    
+}
+#zoomToLayer{
+    position:absolute;
+    top: 260px;
+    right: 14px;
+    background-color: white; 
+}
