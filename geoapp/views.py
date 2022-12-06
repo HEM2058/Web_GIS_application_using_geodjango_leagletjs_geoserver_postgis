@@ -1,5 +1,6 @@
 from django.shortcuts import render
-
+from .models import Geoshp
 # Create your views here.
 def Index(request):
-    return render(request,'index.html')
+    shp = Geoshp.objects.all()
+    return render(request,'index.html',{'shp':shp})

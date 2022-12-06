@@ -10,9 +10,9 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
     <link rel="stylesheet" href="{% static '/style1.css'%}">
     <title>Geoproject</title>
+
 </head>
 <body>
-
     <!-- navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="#">Web View</a>
@@ -28,7 +28,7 @@
               <a class="nav-link" href="#">Upload</a>
             </li>
         
-          
+
           </ul>
         </div>
       </nav>
@@ -61,4 +61,27 @@
 <script src="{% static '/nepal3.js'%}"></script>
 <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 <script src="{% static '/main.js' %}"></script>
+<script src="{% static '/web-gis.js' %}"></script>
+
+
+<script>
+  var overlayMaps = {};
+
+  {% for s in shp %}
+
+  var {{s.name}} = L.tileLayer.wms('http://localhost:8080/geoserver/geoapp/wms',
+  {
+  layers: '{{s.name}}',
+  transparent: true,
+  format: 'image/png'
+  })                                                
+  
+   overlayMaps['{{s.name}}'] = {{s.name}}
+  {% endfor %}
+
+
+
+L.control.layers(baseMap, overlayMaps, {collapsed: false,position: 'topleft'}).addTo(map);
+
+</script>
 </html>
