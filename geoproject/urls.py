@@ -16,8 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 
+#performing task without making app 'note' urls
+from note.views import *
+from geoapp.views import *
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',include('geoapp.urls')),
+    path('',Index,name="index"),
+    path('note/',mapNote,name="note"),
 
 ]

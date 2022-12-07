@@ -10,9 +10,16 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
     <link rel="stylesheet" href="{% static '/style1.css'%}">
     <title>Geoproject</title>
-
+   
 </head>
+<style>
+  .leaflet-popup-content {
+      width: 500px;
+  }
+</style>
 <body>
+  
+ 
     <!-- navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="#">Web View</a>
@@ -32,6 +39,7 @@
           </ul>
         </div>
       </nav>
+      
    <div id="map">
 
     <!-- coordinate showing  -->
@@ -50,6 +58,13 @@
             <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z"/>
           </svg>
     </div>
+
+    <div class="leaflet-control leaflet-prevent pin">
+      <span class="tooltiptext">Enable option for add Markers with note</span>
+      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-pin-fill" viewBox="0 0 16 16">
+        <path d="M4.146.146A.5.5 0 0 1 4.5 0h7a.5.5 0 0 1 .5.5c0 .68-.342 1.174-.646 1.479-.126.125-.25.224-.354.298v4.431l.078.048c.203.127.476.314.751.555C12.36 7.775 13 8.527 13 9.5a.5.5 0 0 1-.5.5h-4v4.5c0 .276-.224 1.5-.5 1.5s-.5-1.224-.5-1.5V10h-4a.5.5 0 0 1-.5-.5c0-.973.64-1.725 1.17-2.189A5.921 5.921 0 0 1 5 6.708V2.277a2.77 2.77 0 0 1-.354-.298C4.342 1.674 4 1.179 4 .5a.5.5 0 0 1 .146-.354z"/>
+      </svg>
+    </div>
     
    </div>
     <!-- <button id="map-print">Print Map </button> -->
@@ -65,7 +80,59 @@
 
 
 <script>
-  var overlayMaps = {};
+
+   $('.leaflet-prevent').on('click',L.DomEvent.stopPropagation);
+   var pinToggler = true;
+  
+
+   $('.pin').on('click',function(){
+    if(pinToggler)
+    {
+      map.on('click',function(e){
+     var lat = e.latlng.lat;
+     var lng = e.latlng.lng;
+     
+     var popup = `<form action="{% url 'note' %}" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="note heading">Note heading</label>
+          <input type="text" name='note_heading' class="form-control" placeholder="Enter note heading">
+        </div>
+        <input type="hidden" name="lat" value="${lat}">
+        <input type="hidden" name="lng" value ="${lng}">
+        <div class="form-group">
+          <label for="note">Note</label>
+          <textarea class='form-control' name="note" placeholder="Enter note here"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>`;
+      
+      var marker = L.marker([lat,lng]).bindPopup(popup)
+      marker.addTo(map)
+     console.log(e)
+  })
+  pinToggler = !pinToggler;
+  }
+    
+    else {
+      map.off('click')
+
+    }
+ 
+   })
+   var markerGroup = new L.featureGroup()
+    {% for n in note %}
+        var lat = {{n.lat}}
+        var lng = {{n.lon}}
+        var marker = L.marker([lat, lng]).bindPopup(`<h3>{{n.note_heading}}</h3><p>{{n.note}}</p>`)
+        marker.addTo(markerGroup)
+    {% endfor %}
+
+
+    var overlayMaps = {
+        'Notes': markerGroup
+    };
+
 
   {% for s in shp %}
 
@@ -76,11 +143,11 @@
   format: 'image/png'
   })                                                
   
+   
    overlayMaps['{{s.name}}'] = {{s.name}}
   {% endfor %}
-
-
-
+     
+  
 L.control.layers(baseMap, overlayMaps, {collapsed: false,position: 'topleft'}).addTo(map);
 
 </script>

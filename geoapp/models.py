@@ -122,6 +122,13 @@ def publish_data(sender,instance,created,**kwargs):
                         pg_password='postgres', schema='public')
     geo.publish_featurestore(
         workspace='geoapp', store_name='geoApp', pg_table=file_name)
+
+    #feature styling
+    geo.create_outline_featurestyle('geoApp_shp', workspace='geoapp')
+
+    geo.publish_style(
+        layer_name=name, style_name='geoApp_shp', workspace='geoapp')
+
     
  
 

@@ -25,7 +25,7 @@ subdomains:['mt0','mt1','mt2','mt3']
 });
 
 var marker = L.marker([38.8610,  71.2761]).addTo(map)
-.bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
+.bindPopup('Nepal')
 .openPopup();
 
 // adding map scale

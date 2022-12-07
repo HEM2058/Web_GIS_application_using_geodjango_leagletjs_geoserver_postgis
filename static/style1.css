@@ -35,3 +35,27 @@
     right: 14px;
     background-color: white; 
 }
+.pin{
+    position:absolute;
+    top: 299px;
+    right: 14px;
+    background-color: white; 
+}
+.pin .tooltiptext{
+    visibility: hidden;
+    width: 300px;
+    background-color: #fff;
+    color:black;
+    font-size: large;
+    text-align: center;
+    border-radius: 6px;
+    position:absolute;
+    top: 2px;
+    right: 30px;
+    
+    z-index: 1;
+}
+.pin:hover .tooltiptext{
+    visibility: visible;
+    
+}
